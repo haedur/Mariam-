@@ -3,53 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To Maryam</title>
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+    <title>For Maryam</title>
     <style>
+        /* إعدادات الألوان والخلفية الكريسمسية */
         :root {
             --off-white: #fdfaf5;
-            --text-color: #444444;
-            --accent-color: #d4a373; /* لون هادئ للزر */
+            --xmas-red: #c0392b;
+            --text-gray: #333;
         }
 
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--off-white);
-            color: var(--text-color);
+            font-family: Arial, sans-serif; /* خط طبيعي وبسيط */
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
             text-align: center;
+        }
+
+        /* تأثير الثلج */
+        .snow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
         }
 
         /* الصفحة الأولى */
         #page1 {
-            display: block;
+            z-index: 10;
         }
 
         .main-title {
-            font-size: 2rem;
-            font-weight: 400;
+            font-size: 2.5rem;
+            color: var(--xmas-red);
             margin-bottom: 30px;
-            color: #2c3e50;
         }
 
         .press-btn {
-            background-color: transparent;
-            color: var(--text-color);
-            border: 1px solid var(--text-color);
-            padding: 10px 25px;
-            font-size: 1rem;
+            background-color: var(--xmas-red);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 5px;
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.3s;
+            transition: 0.3s;
         }
 
         .press-btn:hover {
-            background-color: #f2ede4;
+            opacity: 0.8;
         }
 
         /* الصفحة الثانية */
@@ -58,36 +68,52 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            max-width: 700px;
-            animation: fadeIn 0.8s ease;
+            width: 90%;
+            max-width: 600px;
+            z-index: 10;
         }
 
         .message-text {
             font-size: 1.2rem;
             line-height: 1.6;
-            margin-bottom: 40px;
-            color: #333;
-            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.6); /* خلفية خفيفة لتوضيح النص */
+            padding: 15px;
+            border-radius: 10px;
         }
 
         .video-container {
             width: 100%;
-            max-width: 560px;
             aspect-ratio: 16 / 9;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* حركة الثلج */
+        @keyframes snowfall {
+            0% { transform: translateY(-10vh); }
+            100% { transform: translateY(110vh); }
+        }
+
+        .snowflake {
+            position: absolute;
+            color: #fff;
+            font-size: 1.5rem;
+            animation: snowfall linear infinite;
+            text-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
 
+    <div class="snow" id="snow-container"></div>
+
     <div id="page1">
         <h1 class="main-title">From Haider to Maryam</h1>
-        <button class="press-btn" onclick="showContent()">press here</button>
+        <button class="press-btn" onclick="startExperience()">press here</button>
     </div>
 
     <div id="page2">
@@ -97,22 +123,40 @@
             I wish you a year full of longevity and wonderful events, my love.
         </div>
 
-        <div class="video-container">
-            <iframe 
-                width="100%" 
-                height="100%" 
-                src="https://www.youtube.com/embed/h0T2iOZA-LI?start=47" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
-        </div>
+        <div class="video-container" id="video-box">
+            </div>
     </div>
 
     <script>
-        function showContent() {
+        // وظيفة الثلج - جعلها أكثر كثافة ووضوحاً
+        function createSnow() {
+            const container = document.getElementById('snow-container');
+            const icons = ['❄', '❅', '❆'];
+            for (let i = 0; i < 50; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.innerText = icons[Math.floor(Math.random() * icons.length)];
+                flake.style.left = Math.random() * 100 + 'vw';
+                flake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                flake.style.opacity = Math.random();
+                flake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                flake.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(flake);
+            }
+        }
+
+        createSnow();
+
+        function startExperience() {
             document.getElementById('page1').style.display = 'none';
             document.getElementById('page2').style.display = 'flex';
+            
+            // تحميل الفيديو مع التشغيل التلقائي من الثانية 35
+            const videoBox = document.getElementById('video-box');
+            videoBox.innerHTML = `<iframe width="100%" height="100%" 
+                src="https://www.youtube.com/embed/E8gmARGvPlI?start=35&autoplay=1" 
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen></iframe>`;
         }
     </script>
 
